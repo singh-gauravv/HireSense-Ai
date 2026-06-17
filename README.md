@@ -72,7 +72,7 @@ Frontend/
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/singh-gauravv/HireSense-Ai.git
 cd "FullStack-HireSense AI"
 ```
 
