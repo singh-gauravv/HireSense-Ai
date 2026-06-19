@@ -58,41 +58,43 @@ HireSense AI is an end-to-end interview preparation platform that analyzes candi
 
 ## Architecture
 
-Logical flow (browser → frontend → backend → database):
+Architecture (components and logical flow)
+
+The application consists of the following core components:
+
+- Browser: user agent running the SPA.
+- Frontend: React + Vite single-page application (served as static assets in production or run via Vite in development).
+- Backend: Node.js + Express API that implements business logic, file upload handling, and connectors to external AI services.
+- Data store: MongoDB for persisting users, interview reports, and metadata.
+- External AI Service(s): third‑party GenAI provider(s) (OpenAI, Google GenAI, etc.) called by the backend for analysis and report generation.
+- File storage: local upload folder (in development) or an object storage service (S3-compatible) in production for resumes/assets.
+
+High-level flow:
 
 ```
-┌─────────────┐
-│   Browser   │
-└──────┬──────┘
-│
-▼
-┌─────────────┐
-│ React + Vite│
-│  Frontend   │
-└──────┬──────┘
-│ REST API
-▼
-┌─────────────┐
-│ Node.js API │
-│  Express    │
-└──────┬──────┘
-│
-▼
-┌─────────────┐
-│  MongoDB    │
-└─────────────┘
+Browser
+	│
+	▼
+Frontend (React + Vite)
+	│  (HTTP REST / JSON)
+	▼
+Backend (Node.js + Express)
+	├─▶ MongoDB (data persistence)
+	├─▶ File storage (uploads / generated PDFs)
+	└─▶ External AI APIs (GenAI for resume/interview analysis)
 ```
 
 Flow summary:
 
-- The browser loads the SPA served by the frontend (static build or Vite dev server).
-- The frontend issues REST API requests to the backend for authentication, report creation, and reading reports.
-- The backend performs business logic, invokes AI services for analysis, processes uploads, and persists results to MongoDB.
+- The browser loads the SPA and interacts only with the backend API for authentication, report creation, file uploads, and downloads.
+- The backend validates requests, handles file uploads (streams to local storage or an object store), persists metadata to MongoDB, and coordinates AI calls to external providers to generate interview reports or summaries.
+- External AI providers are always invoked from the backend (server-side) to keep API keys secret and to centralize business logic and rate-limiting.
 
-Security notes:
+Security and deployment notes:
 
-- Avoid exposing MongoDB to the public internet. Use network isolation, authentication, and managed DB services in production.
-- Provide secrets via environment variables, Docker secrets, or a secret manager rather than committing them to source control.
+- Never expose MongoDB or any internal service directly to the public internet; use private networks, VPNs, or managed DB endpoints with proper authentication.
+- Keep API keys and secrets out of source control; provide them via environment variables, Docker secrets, or a secrets manager in production.
+- Use object storage (S3-compatible) for production file uploads to ensure scalability and persistence beyond container lifetimes.
 
 ## Technical Highlights
 
@@ -107,24 +109,26 @@ Security notes:
 Container communication (visual):
 
 ```
-+-----------+        +----------------------+        +-----------------------+
-|  Browser  | <----> | Frontend Container   | <----> | Backend Container    |
-+-----------+        +----------------------+        +-----------------------+
-|
-v
-+-----------+
-| MongoDB   |
-+-----------+
++-----------+       +----------------------+       +-----------------------+
+|  Browser  | <-->  | Frontend Container   | <-->  | Backend Container     |
++-----------+       +----------------------+       +-----------------------+
+									  /        |        \
+									 v         v         v
+								 +--------+  +--------------+  +----------------+
+								 | MongoDB|  | External AI  |  | File Storage   |
+								 |(mongo) |  | (OpenAI/... )|  | (volume / S3)  |
+								 +--------+  +--------------+  +----------------+
 ```
 
 - `mongo`: MongoDB service (persistent volume `mongo-data`).
-- `backend`: Node.js API server. Connects to MongoDB using `MONGO_URI=mongodb://mongo:27017/hiresense`.
+- `backend`: Node.js API server. Connects to MongoDB using `MONGO_URI=mongodb://mongo:27017/hiresense`, calls external AI providers, and reads/writes uploaded files.
 - `frontend`: Static SPA served by a lightweight Node runtime in the production Dockerfile.
 
 Networking and security notes:
 
 - Services run on a user-defined compose network; service names resolve as hostnames (for example `mongo`).
-- Do not expose the MongoDB service to the public internet in production; use private networks and appropriate authentication.
+- The backend is the only service that should hold credentials for external AI providers; do not call AI provider APIs directly from the browser.
+- For production, use an external object storage (S3) for uploads and backups rather than relying on container-local disk. Use secrets managers for credentials and TLS for all external communication.
 
 ## Quick Start
 
