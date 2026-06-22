@@ -1,272 +1,296 @@
-# HireSense AI
+# HireSense AI 🚀
 
-[![React](https://img.shields.io/badge/React-19.x-blue?logo=react&logoColor=white)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-8.x-brightgreen?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Node.js](https://img.shields.io/badge/Node.js-22.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker&logoColor=white)](https://www.docker.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+AI-powered Interview Preparation Platform built with **React, Node.js, MongoDB Atlas, Docker, Kubernetes (Kind), NGINX Ingress, HPA, and Gemini AI**.
 
-A production-oriented full‑stack application that helps candidates prepare for technical interviews by combining resume analysis, job-description parsing, and AI-powered interview plan generation.
+---
 
-This repository contains a React + Vite frontend and a Node.js + Express backend using MongoDB. The application supports user authentication, resume uploads, AI-generated interview reports, and downloadable resume summaries.
+# 📸 Project Screenshots
 
-## Table of contents
-- Project Overview
-- Project Highlights
-- Skills Demonstrated
-- Architecture
-- Technical Highlights
-- Docker Architecture
-- Quick Start
-- Development
-- Deployment
-- API Overview
-- Environment variables (.env.example)
-- Future Enhancements
-- Contributing
-- License & Author
+## Architecture Diagram
+![Architecture](screenshots/architecture.png)
 
-## Project Overview
+## Login Page
+![Login](screenshots/login-page.png)
 
-HireSense AI is an end-to-end interview preparation platform that analyzes candidate resumes and job descriptions to produce tailored interview plans and reports. The project demonstrates modern full-stack engineering practices including secure authentication, file upload handling, AI integration, and containerized deployment.
+## Dashboard
+![Dashboard](screenshots/dashboard.png)
 
-## Project Highlights
+## Kubernetes Node
+![Node](screenshots/k8s-node.png)
 
-- Built a production-ready full-stack AI application with a clear separation of concerns.
-- Implemented JWT authentication with protected frontend and backend routes.
-- Integrated AI-powered resume and interview analysis workflows.
-- Implemented robust file upload handling and PDF resume generation.
-- Containerized application with Docker and Docker Compose for reproducible environments.
-- Designed a scalable three-tier architecture suitable for cloud deployment.
-- Deployed as a containerized multi-service application using Docker and Docker Compose.
+## Running Pods
+![Pods](screenshots/k8s-pods.png)
 
-## Skills Demonstrated
+## Deployments
+![Deployments](screenshots/k8s-deployments.png)
 
+## Services
+![Services](screenshots/k8s-services.png)
+
+## Ingress
+![Ingress](screenshots/k8s-ingress.png)
+
+## Ingress Description
+![Ingress Description](screenshots/k8s-ingress-describe.png)
+
+## Horizontal Pod Autoscaler
+![HPA](screenshots/k8s-hpa.png)
+
+## Complete Kubernetes Resources
+![K8s All](screenshots/k8s-all.png)
+
+## Ingress Port Forward
+![Port Forward](screenshots/port-forward.png)
+
+---
+
+# 📌 Overview
+
+HireSense AI helps candidates prepare for interviews by:
+
+- Uploading resumes
+- Analyzing job descriptions
+- Generating interview strategies
+- Detecting skill gaps
+- Creating preparation roadmaps
+- Generating interview questions
+- Producing ATS-friendly resume improvements
+
+---
+
+# 🏗️ Architecture
+
+User Browser
+→ NGINX Ingress
+
+NGINX Ingress
+├── Frontend Service
+└── Backend Service
+
+Backend Service
+├── MongoDB Atlas
+└── Google Gemini AI
+
+---
+
+# ⚙️ Tech Stack
+
+## Frontend
 - React
 - Vite
+- React Router
+- Axios
+- SCSS
+
+## Backend
 - Node.js
 - Express.js
-- MongoDB
-- REST APIs
 - JWT Authentication
+- Multer
+- PDF Parse
+
+## Database
+- MongoDB Atlas
+
+## AI
+- Google Gemini AI
+
+## DevOps
 - Docker
 - Docker Compose
-- AI Integration
-- File Upload Handling
-- Full-Stack Development
+- Kubernetes (Kind)
+- NGINX Ingress Controller
+- Horizontal Pod Autoscaler (HPA)
 
-## Architecture
+---
 
-Architecture (components and logical flow)
+# ✨ Features
 
-The application consists of the following core components:
+## Authentication
+- User Registration
+- User Login
+- JWT Authentication
+- Protected Routes
 
-- Browser: user agent running the SPA.
-- Frontend: React + Vite single-page application (served as static assets in production or run via Vite in development).
-- Backend: Node.js + Express API that implements business logic, file upload handling, and connectors to external AI services.
-- Data store: MongoDB for persisting users, interview reports, and metadata.
-- External AI Service(s): third‑party GenAI provider(s) (OpenAI, Google GenAI, etc.) called by the backend for analysis and report generation.
-- File storage: local upload folder (in development) or an object storage service (S3-compatible) in production for resumes/assets.
+## Resume Processing
+- PDF Upload
+- Resume Parsing
+- Profile Extraction
 
-High-level flow:
+## AI Features
+- Interview Strategy Generation
+- Technical Questions
+- Behavioral Questions
+- Skill Gap Analysis
+- Match Score Calculation
+- Preparation Roadmap
 
-```
-Browser
-	│
-	▼
-Frontend (React + Vite)
-	│  (HTTP REST / JSON)
-	▼
-Backend (Node.js + Express)
-	├─▶ MongoDB (data persistence)
-	├─▶ File storage (uploads / generated PDFs)
-	└─▶ External AI APIs (GenAI for resume/interview analysis)
-```
+## DevOps Features
+- Dockerized Frontend
+- Dockerized Backend
+- Kubernetes Deployments
+- Kubernetes Services
+- Ingress Routing
+- Horizontal Pod Autoscaling
 
-Flow summary:
+---
 
-- The browser loads the SPA and interacts only with the backend API for authentication, report creation, file uploads, and downloads.
-- The backend validates requests, handles file uploads (streams to local storage or an object store), persists metadata to MongoDB, and coordinates AI calls to external providers to generate interview reports or summaries.
-- External AI providers are always invoked from the backend (server-side) to keep API keys secret and to centralize business logic and rate-limiting.
+# 🐳 Docker Deployment
 
-Security and deployment notes:
-
-- Never expose MongoDB or any internal service directly to the public internet; use private networks, VPNs, or managed DB endpoints with proper authentication.
-- Keep API keys and secrets out of source control; provide them via environment variables, Docker secrets, or a secrets manager in production.
-- Use object storage (S3-compatible) for production file uploads to ensure scalability and persistence beyond container lifetimes.
-
-## Technical Highlights
-
-- Full-stack architecture with a client-first SPA and RESTful backend.
-- JWT authentication with secure handling and protected routes.
-- Resume ingestion and parsing pipeline with AI-assisted analysis.
-- File upload handling (multipart/form-data) and PDF generation.
-- Containerized services for consistent development and demo environments.
-
-## Docker Architecture
-
-Container communication (visual):
-
-```
-+-----------+       +----------------------+       +-----------------------+
-|  Browser  | <-->  | Frontend Container   | <-->  | Backend Container     |
-+-----------+       +----------------------+       +-----------------------+
-									  /        |        \
-									 v         v         v
-								 +--------+  +--------------+  +----------------+
-								 | MongoDB|  | External AI  |  | File Storage   |
-								 |(mongo) |  | (OpenAI/... )|  | (volume / S3)  |
-								 +--------+  +--------------+  +----------------+
-```
-
-- `mongo`: MongoDB service (persistent volume `mongo-data`).
-- `backend`: Node.js API server. Connects to MongoDB using `MONGO_URI=mongodb://mongo:27017/hiresense`, calls external AI providers, and reads/writes uploaded files.
-- `frontend`: Static SPA served by a lightweight Node runtime in the production Dockerfile.
-
-Networking and security notes:
-
-- Services run on a user-defined compose network; service names resolve as hostnames (for example `mongo`).
-- The backend is the only service that should hold credentials for external AI providers; do not call AI provider APIs directly from the browser.
-- For production, use an external object storage (S3) for uploads and backups rather than relying on container-local disk. Use secrets managers for credentials and TLS for all external communication.
-
-## Quick Start
-
-Run the full stack with Docker Compose (recommended):
+## Build Images
 
 ```bash
-git clone https://github.com/singh-gauravv/HireSense-Ai.git
-cd "FullStack-HireSense AI"
+docker build -t singhhgauravv/hiresense-frontend:v1 ./frontend
 
-# Build and start services
-docker compose build --no-cache
-docker compose up
+docker build -t singhhgauravv/hiresense-backend:v1 ./backend
 ```
 
-Default endpoints:
-- Backend: http://localhost:3000
-- Frontend: http://localhost (port 80)
-
-Stop and remove volumes:
+## Run Containers
 
 ```bash
-docker compose down -v
+docker compose up -d
 ```
 
-## Development (local without Docker)
+---
 
-Backend
+# ☸️ Kubernetes Deployment
+
+## Create Cluster
 
 ```bash
-cd Backend
-npm install
-# create Backend/.env per the example below
-npm run dev
+kind create cluster --name hiresense
 ```
 
-Frontend
+## Deploy Resources
 
 ```bash
-cd Frontend
-npm install
-npm run dev
-# Vite dev server typically runs at http://localhost:5173
+kubectl apply -f k8s/
 ```
 
-## Deployment
+## Verify
 
-For production deployment consider:
-- Kubernetes with Deployments, Services and Ingress (TLS termination).
-- Managed MongoDB (Atlas) or a properly configured replica set.
-- CI/CD pipelines for automated builds, tests, and image publishing.
-- Use secret management for credentials (Vault, cloud secrets).
+```bash
+kubectl get nodes
 
-Minimal production steps:
-1. Build images and push to a container registry.
-2. Deploy with your orchestration platform (Kubernetes, ECS, etc.).
-3. Configure HTTPS, monitoring, and backups.
+kubectl get pods -n hiresense
 
-## API Overview
+kubectl get deployments -n hiresense
 
-### Auth
+kubectl get svc -n hiresense
 
-- `POST /api/auth/register` — Register a user.
-- `POST /api/auth/login` — Authenticate and receive a JWT (cookie or header).
-- `GET /api/auth/get-me` — Get the authenticated user.
+kubectl get ingress -n hiresense
 
-### Interview
+kubectl get hpa -n hiresense
+```
 
-- `POST /api/interview` — Create an interview report (multipart/form-data, supports resume upload).
-- `GET /api/interview` — List the authenticated user's reports.
-- `GET /api/interview/report/:interviewId` — Retrieve a specific report.
-- `POST /api/interview/resume/pdf/:interviewReportId` — Generate or download a resume PDF.
+---
 
-Refer to `Backend/src/controllers` for implementation details and request/response formats.
+# 🌐 Access Application
 
-## Environment variables (.env.example)
+Expose ingress controller:
 
-Create a `Backend/.env` file from the example below. Do not commit secrets to source control.
+```bash
+kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
+```
+
+Open:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# 📂 Kubernetes Resources
+
+- Namespace
+- Frontend Deployment
+- Backend Deployment
+- Frontend Service
+- Backend Service
+- NGINX Ingress
+- Backend HPA
+- Frontend HPA
+- Kubernetes Secrets
+
+---
+
+# 🔑 Environment Variables
+
+## Backend
 
 ```env
-MONGO_URI=
-JWT_SECRET=
-GOOGLE_GENAI_API_KEY=
 PORT=3000
-NODE_ENV=development
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+GOOGLE_GENAI_API_KEY=your_gemini_api_key
 ```
 
-## Future Enhancements
+---
 
-- OAuth login (Google / GitHub) for streamlined onboarding.
-- Kubernetes deployment with Helm charts and autoscaling.
-- CI/CD pipeline with automated tests, security scans and image promotion.
-- Redis caching for session and frequently accessed data.
-- Role-based access control (RBAC) and administration UI.
-- AI interview chatbot for conversational practice and feedback.
-- ATS resume scoring and standardized exports for recruiter workflows.
-- Observability: metrics, tracing and centralized logging (Prometheus, Grafana, ELK).
+# 📡 API Endpoints
 
-## Repository Setup Recommendations
+## Auth
 
-Include these files in the repository to improve security, clarity, and contributor experience:
+```http
+POST /api/auth/register
 
-- `LICENSE` — Add an open-source license (MIT recommended) to clarify usage and contribution terms.
-- `.gitignore` — Exclude `node_modules`, build artifacts, local environment files, and other temporary files from version control.
-- `Backend/.env.example` — Provide a template of required environment variables (keys only) so contributors can run the project locally without exposing secrets.
+POST /api/auth/login
 
-Providing these files helps maintainers and contributors get started quickly and reduces accidental leaks of sensitive data.
+GET /api/auth/get-me
 
-## GitHub Repository Topics
+GET /api/auth/logout
+```
 
-Recommended topics to add on the GitHub repository page for discoverability and categorization:
+## Interview
 
-- react
-- vite
-- nodejs
-- express
-- mongodb
-- docker
-- docker-compose
-- jwt-authentication
-- fullstack
-- ai
-- genai
-- resume-parser
-- interview-preparation
+```http
+POST /api/interview
 
-## Contributing
+GET /api/interview
 
-Contributions are welcome. Suggested workflow:
-1. Fork the repository and create a descriptive branch: `feature/<name>` or `fix/<issue>`.
-2. Run tests and linters locally.
-3. Open a Pull Request with a clear summary and any migration steps.
-4. Respond to review comments and keep the PR focused and atomic.
+GET /api/interview/report/:interviewId
 
-Please follow the existing code style and add tests for new functionality when appropriate.
+POST /api/interview/resume/pdf/:interviewReportId
+```
 
-## License & Author
+---
 
-Author: Gaurav Singh
+# 🏆 Key Learnings
 
+- Docker Containerization
+- Kubernetes Deployments
+- Services & Networking
+- Ingress Controller
+- Horizontal Pod Autoscaling
+- MongoDB Atlas Integration
+- JWT Authentication
+- File Upload Handling
+- AI Integration using Gemini
+- Full Stack Development
+- DevOps Best Practices
 
+---
 
+# 🚀 Future Enhancements
+
+- GitHub Actions CI
+- ArgoCD GitOps CD
+- Helm Charts
+- Prometheus Monitoring
+- Grafana Dashboards
+- Loki Logging
+- Trivy Image Scanning
+- SonarQube Integration
+- AWS EKS Deployment
+
+---
+
+# 👨‍💻 Author
+
+Gaurav Singh
+
+GitHub: https://github.com/singh-gauravv
