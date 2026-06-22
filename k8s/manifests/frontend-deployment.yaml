@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: singhhgauravv/hiresense-frontend:v1
+        image: singhhgauravv/frontend
         imagePullPolicy: Always
 
         ports:

@@ -34,25 +34,88 @@ const interviewReportSchema = z.object({
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
 
+    const prompt = `
+You are an expert technical interviewer.
 
-    const prompt = `Generate an interview report for a candidate with the following details:
-                        Resume: ${resume}
-                        Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
-`
+Return ONLY a valid JSON object.
+
+The JSON MUST EXACTLY match this structure:
+
+{
+  "title": "string",
+  "matchScore": number,
+  "technicalQuestions": [
+    {
+      "question": "string",
+      "intention": "string",
+      "answer": "string"
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "string",
+      "intention": "string",
+      "answer": "string"
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "string",
+      "severity": "low"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "string",
+      "tasks": ["string"]
+    }
+  ]
+}
+
+Rules:
+- title must contain the job title.
+- matchScore must be between 0 and 100.
+- Generate exactly 8 technical questions.
+- Generate exactly 5 behavioral questions.
+- Generate at least 3 skill gaps.
+- Generate a 7-day preparation plan.
+- Do NOT return markdown.
+- Do NOT return explanations.
+- Do NOT return additional fields.
+
+Resume:
+${resume}
+
+Self Description:
+${selfDescription}
+
+Job Description:
+${jobDescription}
+`;
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
             responseMimeType: "application/json",
             responseSchema: zodToJsonSchema(interviewReportSchema),
         }
-    })
+    });
 
-    return JSON.parse(response.text)
+    console.log("RAW GEMINI RESPONSE:");
+    console.log(response.text);
 
+    const parsed = JSON.parse(response.text);
 
+    return {
+        title: parsed.title || "Interview Report",
+        matchScore: parsed.matchScore || 0,
+        technicalQuestions: parsed.technicalQuestions || [],
+        behavioralQuestions: parsed.behavioralQuestions || [],
+        skillGaps: parsed.skillGaps || [],
+        preparationPlan: parsed.preparationPlan || []
+    };
 }
 
 
@@ -96,13 +159,16 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                     `
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
             responseMimeType: "application/json",
             responseSchema: zodToJsonSchema(resumePdfSchema),
         }
     })
+
+    console.log("RAW GEMINI RESPONSE:");
+    console.log(response.text);
 
 
     const jsonContent = JSON.parse(response.text)
