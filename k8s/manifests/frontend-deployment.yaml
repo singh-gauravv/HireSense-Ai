@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: singhhgauravv/frontend:latest
+        image: singhhgauravv/frontend:7855418
         imagePullPolicy: Always
 
         ports:
