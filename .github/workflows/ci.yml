@@ -52,11 +52,11 @@ jobs:
 
       - name: Update Backend Manifest
         run: |
-          sed -i "s|image: .*backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/backend:${{ env.IMAGE_TAG }}|g" k8s/backend-deployment.yaml
+          sed -i "s|image: .*backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/backend:${{ env.IMAGE_TAG }}|g" k8s/manifests/backend-deployment.yaml
 
       - name: Update Frontend Manifest
         run: |
-          sed -i "s|image: .*frontend:.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend:${{ env.IMAGE_TAG }}|g" k8s/frontend-deployment.yaml
+          sed -i "s|image: .*frontend:.*|image: ${{ secrets.DOCKER_USERNAME }}/frontend:${{ env.IMAGE_TAG }}|g" k8s/manifests/frontend-deployment.yaml
 
       - name: Commit Manifest Changes
         run: |
