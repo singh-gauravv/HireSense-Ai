@@ -8,6 +8,7 @@ on:
 jobs:
 
   build-and-update:
+    if: github.actor != 'github-actions[bot]'
 
     runs-on: ubuntu-latest
 
@@ -65,6 +66,6 @@ jobs:
 
           git add k8s/
 
-          git commit -m "Update image tags to ${{ env.IMAGE_TAG }}" || exit 0
+          git diff --staged --quiet || git commit -m "Update image tags to ${GITHUB_SHA::7} [skip ci]"
 
           git push
