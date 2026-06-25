@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: singhhgauravv/backend:2a4fb20
+        image: singhhgauravv/backend:5ca3605
         imagePullPolicy: Always
 
         ports:
