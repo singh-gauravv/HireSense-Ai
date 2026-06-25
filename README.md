@@ -1,296 +1,305 @@
-# HireSense AI 🚀
+# 🚀 HireSense AI - Production-Ready AI Interview Preparation Platform
 
-AI-powered Interview Preparation Platform built with **React, Node.js, MongoDB Atlas, Docker, Kubernetes (Kind), NGINX Ingress, HPA, and Gemini AI**.
+HireSense AI is a production-ready full-stack web application that helps job seekers prepare for interviews using **Generative AI**. The platform analyzes resumes and job descriptions to generate personalized interview reports, identify skill gaps, create preparation roadmaps, and generate ATS-optimized resumes.
 
----
-
-# 📸 Project Screenshots
-
-## Architecture Diagram
-![Architecture](screenshots/architecture.png)
-
-## Login Page
-![Login](screenshots/login-page.png)
-
-## Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-## Kubernetes Node
-![Node](screenshots/k8s-node.png)
-
-## Running Pods
-![Pods](screenshots/k8s-pods.png)
-
-## Deployments
-![Deployments](screenshots/k8s-deployments.png)
-
-## Services
-![Services](screenshots/k8s-services.png)
-
-## Ingress
-![Ingress](screenshots/k8s-ingress.png)
-
-## Ingress Description
-![Ingress Description](screenshots/k8s-ingress-describe.png)
-
-## Horizontal Pod Autoscaler
-![HPA](screenshots/k8s-hpa.png)
-
-## Complete Kubernetes Resources
-![K8s All](screenshots/k8s-all.png)
-
-## Ingress Port Forward
-![Port Forward](screenshots/port-forward.png)
+The application is containerized with Docker, deployed on Kubernetes, and follows a complete **GitOps CI/CD** workflow using GitHub Actions and ArgoCD.
 
 ---
 
-# 📌 Overview
+# ✨ Features
 
-HireSense AI helps candidates prepare for interviews by:
+* 📄 Upload resume (PDF)
+* 🤖 AI-powered interview report generation using Google Gemini
+* 🎯 Job description analysis
+* 📊 Resume-job match score
+* 💡 Technical interview questions with detailed answers
+* 🗣️ Behavioral interview questions
+* 📈 Skill gap analysis
+* 📅 Personalized interview preparation roadmap
+* 📑 AI-generated ATS-friendly resume
+* 🔐 Secure JWT Authentication
+* ☁️ Production-ready Kubernetes deployment
+* 📊 Real-time monitoring with Prometheus & Grafana
 
-- Uploading resumes
-- Analyzing job descriptions
-- Generating interview strategies
-- Detecting skill gaps
-- Creating preparation roadmaps
-- Generating interview questions
-- Producing ATS-friendly resume improvements
+---
+
+# 🧠 AI Capabilities
+
+HireSense AI leverages **Google Gemini AI** to provide personalized interview preparation by:
+
+* Parsing uploaded resumes
+* Understanding job descriptions
+* Performing resume-to-job matching
+* Generating technical interview questions
+* Generating behavioral interview questions
+* Identifying missing skills
+* Creating structured preparation plans
+* Generating ATS-optimized resumes
+* Returning structured JSON responses using Zod schema validation
 
 ---
 
 # 🏗️ Architecture
 
-User Browser
-→ NGINX Ingress
-
-NGINX Ingress
-├── Frontend Service
-└── Backend Service
-
-Backend Service
-├── MongoDB Atlas
-└── Google Gemini AI
+```
+                 User
+                   │
+                   ▼
+          React Frontend
+                   │
+          NGINX Ingress Controller
+                   │
+                   ▼
+          Node.js + Express Backend
+                   │
+      -----------------------------
+      │                           │
+      ▼                           ▼
+ MongoDB Atlas             Google Gemini AI
+```
 
 ---
 
 # ⚙️ Tech Stack
 
 ## Frontend
-- React
-- Vite
-- React Router
-- Axios
-- SCSS
+
+* React.js
+* Vite
+* Tailwind CSS
+* Axios
 
 ## Backend
-- Node.js
-- Express.js
-- JWT Authentication
-- Multer
-- PDF Parse
 
-## Database
-- MongoDB Atlas
+* Node.js
+* Express.js
+* MongoDB
+* JWT Authentication
+* Multer
+* PDF-Parse
+* Puppeteer
 
-## AI
-- Google Gemini AI
+## AI & GenAI
+
+* Google Gemini AI
+* Prompt Engineering
+* LLM Integration
+* Structured JSON Output
+* Zod Schema Validation
 
 ## DevOps
-- Docker
-- Docker Compose
-- Kubernetes (Kind)
-- NGINX Ingress Controller
-- Horizontal Pod Autoscaler (HPA)
+
+* Docker
+* Kubernetes (Kind)
+* NGINX Ingress Controller
+* Horizontal Pod Autoscaler (HPA)
+* GitHub Actions
+* ArgoCD
+* GitOps
+* Docker Hub
+
+## Monitoring
+
+* Prometheus
+* Grafana
 
 ---
 
-# ✨ Features
+# 📂 Project Structure
 
-## Authentication
-- User Registration
-- User Login
-- JWT Authentication
-- Protected Routes
+```
+HireSense-AI/
 
-## Resume Processing
-- PDF Upload
-- Resume Parsing
-- Profile Extraction
-
-## AI Features
-- Interview Strategy Generation
-- Technical Questions
-- Behavioral Questions
-- Skill Gap Analysis
-- Match Score Calculation
-- Preparation Roadmap
-
-## DevOps Features
-- Dockerized Frontend
-- Dockerized Backend
-- Kubernetes Deployments
-- Kubernetes Services
-- Ingress Routing
-- Horizontal Pod Autoscaling
-
----
-
-# 🐳 Docker Deployment
-
-## Build Images
-
-```bash
-docker build -t singhhgauravv/hiresense-frontend:v1 ./frontend
-
-docker build -t singhhgauravv/hiresense-backend:v1 ./backend
+├── Frontend/
+├── Backend/
+├── k8s/
+│   └── manifests/
+├── .github/
+│   └── workflows/
+├── README.md
 ```
 
-## Run Containers
+---
+
+# 🚀 CI/CD Pipeline
+
+The project implements a complete GitOps workflow.
+
+```
+Developer Push
+        │
+        ▼
+GitHub Repository
+        │
+        ▼
+GitHub Actions
+        │
+        ├── Build Backend Image
+        ├── Build Frontend Image
+        ├── Push Images to Docker Hub
+        └── Update Kubernetes Manifests
+                     │
+                     ▼
+             Commit Changes to Git
+                     │
+                     ▼
+                ArgoCD Detects Change
+                     │
+                     ▼
+              Kubernetes Sync
+                     │
+                     ▼
+             Rolling Deployment
+```
+
+---
+
+# ☸️ Kubernetes Features
+
+* Multi-Pod Deployment
+* ReplicaSets
+* Kubernetes Services
+* NGINX Ingress Controller
+* Horizontal Pod Autoscaler
+* Readiness Probes
+* Liveness Probes
+* Kubernetes Secrets
+* Resource Requests & Limits
+
+---
+
+# 📊 Monitoring & Observability
+
+Integrated monitoring using **Prometheus** and **Grafana**.
+
+Monitored metrics include:
+
+* Pod Health
+* CPU Utilization
+* Memory Utilization
+* Kubernetes Resource Usage
+* Deployment Health
+* Cluster Metrics
+
+---
+
+# 🔐 Authentication
+
+* JWT Authentication
+* Protected API Routes
+* Password Hashing
+* Secure Cookie-based Authentication
+
+---
+
+# 📦 Deployment
+
+The application is fully containerized using Docker and deployed on a Kubernetes (Kind) cluster.
+
+Deployment includes:
+
+* Docker Images
+* Kubernetes Deployments
+* Kubernetes Services
+* NGINX Ingress
+* Horizontal Pod Autoscaler
+* Kubernetes Secrets
+
+---
+
+# 🎯 Key Highlights
+
+* Production-ready Full Stack Application
+* AI-powered Interview Preparation Platform
+* Google Gemini LLM Integration
+* ATS Resume Generation
+* Kubernetes-based Deployment
+* GitOps CI/CD using GitHub Actions & ArgoCD
+* Dockerized Microservice-style Architecture
+* Production Monitoring with Prometheus & Grafana
+* Cloud-native Deployment Practices
+
+---
+
+# 🛠️ Local Setup
+
+## Clone Repository
 
 ```bash
-docker compose up -d
+git clone https://github.com/<your-username>/HireSense-AI.git
+
+cd HireSense-AI
+```
+
+## Backend
+
+```bash
+cd Backend
+
+npm install
+
+npm run dev
+```
+
+## Frontend
+
+```bash
+cd Frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+# 🐳 Docker
+
+Build Backend
+
+```bash
+docker build -t backend ./Backend
+```
+
+Build Frontend
+
+```bash
+docker build -t frontend ./Frontend
 ```
 
 ---
 
 # ☸️ Kubernetes Deployment
 
-## Create Cluster
+```bash
+kubectl apply -f k8s/manifests/
+```
+
+Verify:
 
 ```bash
-kind create cluster --name hiresense
-```
-
-## Deploy Resources
-
-```bash
-kubectl apply -f k8s/
-```
-
-## Verify
-
-```bash
-kubectl get nodes
-
-kubectl get pods -n hiresense
-
-kubectl get deployments -n hiresense
-
-kubectl get svc -n hiresense
-
-kubectl get ingress -n hiresense
-
-kubectl get hpa -n hiresense
+kubectl get all -n hiresense
 ```
 
 ---
 
-# 🌐 Access Application
+# 📈 Future Improvements
 
-Expose ingress controller:
-
-```bash
-kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
-```
-
-Open:
-
-```text
-http://localhost:8080
-```
-
----
-
-# 📂 Kubernetes Resources
-
-- Namespace
-- Frontend Deployment
-- Backend Deployment
-- Frontend Service
-- Backend Service
-- NGINX Ingress
-- Backend HPA
-- Frontend HPA
-- Kubernetes Secrets
-
----
-
-# 🔑 Environment Variables
-
-## Backend
-
-```env
-PORT=3000
-
-MONGO_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_jwt_secret
-
-GOOGLE_GENAI_API_KEY=your_gemini_api_key
-```
-
----
-
-# 📡 API Endpoints
-
-## Auth
-
-```http
-POST /api/auth/register
-
-POST /api/auth/login
-
-GET /api/auth/get-me
-
-GET /api/auth/logout
-```
-
-## Interview
-
-```http
-POST /api/interview
-
-GET /api/interview
-
-GET /api/interview/report/:interviewId
-
-POST /api/interview/resume/pdf/:interviewReportId
-```
-
----
-
-# 🏆 Key Learnings
-
-- Docker Containerization
-- Kubernetes Deployments
-- Services & Networking
-- Ingress Controller
-- Horizontal Pod Autoscaling
-- MongoDB Atlas Integration
-- JWT Authentication
-- File Upload Handling
-- AI Integration using Gemini
-- Full Stack Development
-- DevOps Best Practices
-
----
-
-# 🚀 Future Enhancements
-
-- GitHub Actions CI
-- ArgoCD GitOps CD
-- Helm Charts
-- Prometheus Monitoring
-- Grafana Dashboards
-- Loki Logging
-- Trivy Image Scanning
-- SonarQube Integration
-- AWS EKS Deployment
+* Multi-LLM Support
+* Resume Version History
+* AI Mock Interview Voice Assistant
+* AI Chat Assistant
+* Email Notifications
+* Multi-language Support
+* AWS EKS Deployment
+* Helm Charts
+* Terraform-based Infrastructure Provisioning
 
 ---
 
 # 👨‍💻 Author
 
-Gaurav Singh
+**Gaurav Singh**
 
-GitHub: https://github.com/singh-gauravv
+* GitHub: https://github.com/singh-gauravv
+* LinkedIn: https://www.linkedin.com/in/gaurav-singh-devops/
