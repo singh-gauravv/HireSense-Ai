@@ -302,4 +302,4 @@ kubectl get all -n hiresense
 **Gaurav Singh**
 
 * GitHub: https://github.com/singh-gauravv
-* LinkedIn: https://www.linkedin.com/in/gaurav-singh-devops/
+* LinkedIn: https://www.linkedin.com/in/gauravsinghdevops/
